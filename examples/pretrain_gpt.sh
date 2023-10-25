@@ -4,10 +4,10 @@
 
 export CUDA_DEVICE_MAX_CONNECTIONS=1
 
-CHECKPOINT_PATH=<Specify path>
-VOCAB_FILE=<Specify path to file>/gpt2-vocab.json
-MERGE_FILE=<Specify path to file>/gpt2-merges.txt
-DATA_PATH=<Specify path and file prefix>_text_document
+CHECKPOINT_PATH=../gpt_nlp_files/
+VOCAB_FILE=../gpt_nlp_files/gpt2-vocab.json
+MERGE_FILE=../gpt_nlp_files/gpt2-merges.txt
+DATA_PATH=../gpt_nlp_files/my-gpt2_text_document
 
 GPT_ARGS="
     --num-layers 24 \
@@ -42,9 +42,9 @@ OUTPUT_ARGS="
     --eval-iters 10
 "
 
-torchrun pretrain_gpt.py \
+torchrun --nproc_per_node=1 --master_port=12345 ../pretrain_gpt.py \
     $GPT_ARGS \
     $DATA_ARGS \
     $OUTPUT_ARGS \
     --save $CHECKPOINT_PATH \
-    --load $CHECKPOINT_PATH
+    --load $CHECKPOINT_PATH \
